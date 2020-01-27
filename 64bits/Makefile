@@ -1,8 +1,8 @@
 CC=gcc
-CFLAGS=-m64 -Wall
+CFLAGS=-m64 -Wall -std=c99 -fpack-struct=1
 
 all:	main.o shaderect.o
-	$(CC) $(CFLAGS) -static main.o shaderect.o -o shaderect
+	$(CC) $(CFLAGS) main.o shaderect.o -o shaderect
 
 main.o:	main.c
 	$(CC) $(CFLAGS) -c main.c -o main.o

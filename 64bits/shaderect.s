@@ -1,195 +1,173 @@
-	section	.data
-	msg	db  'shadedrect.bmp',0x00
-
-	section	.bss
-bmpheadline:	resb	54
-pixel_array:	resb	40000000	
-	
-	section	.text
+section	.text
 	global	shaderect	
 shaderect:
 	push	rbp
 	mov	rbp, rsp
-	push	rbx
+	sub	ebp, 20
 	push	r12
 	push	r13
 	push	r14
-	push	r15
+	push 	r15
 
-	lea	eax, [esi+esi*2]
+	mov	[ebp-8],
+	mov	[ebp-12],
+	mov	[ebp-16], ecx
+
+	mov	eax, [ebp+16]
+	lea	eax, [eax+eax*2]
 	mov 	ebx, eax
 	add	ebx, 3
-	mov	ecx, 11b
+	mov	ecx, 3
 	not	ecx
 	and	ecx, ebx
 	sub	ecx, eax 
-	mov	r12d, ecx
+	mov	[ebp-68], ecx
 
-        mov  	r14d, 0                
-        mov   	r13, pixel_array            
-loopy:
-	mov	r15, rdx
-	push	rdi
-	push	rsi
-	push	rdx
-	mov	ecx, [r15]
-	mov	edx, [r15+8]
-	mov	esi, edi
-	dec	esi
-	mov	edi, r14d
-	call	intpl
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	mov	r8d, eax
+	mov	esi, [ebp+20]
+	mov	ecx, [ebp+12]
+	mov	[ebp-4], ecx
+	dec	ecx
 
-	push	rdi
-	push	rsi
-	push	rdx
-	push	r8
-	mov	ecx, [r15+4]
-	mov	edx, [r15+12]
-	mov	esi, edi
-	dec	esi
-	mov	edi, r14d
-	call	intpl
-	pop	r8
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	
-	mov	r9d, eax
-	mov    	r15d, 0
+	mov	eax, 0
+	mov	ebx, 0
+	mov	al, [esi]
+	mov	bl, [esi+8]
+	sub	eax, ebx
+	cdq
+	shl	ebx, 16
+	mov	[ebp-16], ebx
+	shl	eax, 16
+	idiv	ecx
+	mov	[ebp-40], eax
+
+	mov	eax, 0
+	mov	ebx, 0
+	mov	al, [esi+1]
+	mov	bl, [esi+9]
+	sub	eax, ebx
+	cdq
+	shl	ebx, 16
+	mov	[ebp-12], ebx
+	shl	eax, 16
+	idiv	ecx
+	mov	[ebp-36], eax
+
+	mov	eax, 0
+	mov	ebx, 0
+	mov	al, [esi+2]
+	mov	bl, [esi+10]
+	sub	eax, ebx
+	cdq
+	shl	ebx, 16
+	mov	[ebp-8 ], ebx
+	shl	eax, 16
+	idiv	ecx
+	mov	[ebp-32], eax
+
+	mov	eax, 0
+	mov	ebx, 0
+	mov	al, [esi+4]
+	mov	bl, [esi+12]
+	sub	eax, ebx
+	cdq
+	shl	ebx, 16
+	mov	[ebp-28], ebx
+	shl	eax, 16
+	idiv	ecx
+	mov	[ebp-52], eax
+
+	mov	eax, 0
+	mov	ebx, 0
+	mov	al, [esi+5]
+	mov	bl, [esi+13]
+	sub	eax, ebx
+	cdq
+	shl	ebx, 16
+	mov	[ebp-24], ebx
+	shl	eax, 16
+	idiv	ecx
+	mov	[ebp-48], eax
+
+	mov	eax, 0
+	mov	ebx, 0
+	mov	al, [esi+6]
+	mov	bl, [esi+14]
+	sub	eax, ebx
+	cdq
+	shl	ebx, 16
+	mov	[ebp-20], ebx
+	shl	eax, 16
+	idiv	ecx
+	mov	[ebp-44], eax
+
+	mov	esi, [ebp+8]
+loopy:	
+	mov	ecx, [ebp+16]
+	dec	ecx
+
+	mov	eax, [ebp-28]
+	mov	ebx, [ebp-16]
+	sub	eax, ebx
+	cdq
+	idiv	ecx
+	mov	[ebp-64], eax
+
+	mov	eax, [ebp-24]
+	mov	ebx, [ebp-12]
+	sub	eax, ebx
+	cdq
+	idiv	ecx
+	mov	[ebp-60], eax
+
+	mov	eax, [ebp-20]
+	mov	ebx, [ebp-8]
+	sub	eax, ebx
+	cdq
+	idiv	ecx
+	mov	[ebp-56], eax
+
+	mov     edi, [ebp+16]
+	mov	eax, [ebp-8]
+	mov	ebx, [ebp-12]
+	mov	ecx, [ebp-16]
 loopx:
-	push	rdi
-	push	rsi
-	push	rdx
-	push	r9
-	push	r8
-	mov	ecx, r9d
-	mov	edx, r8d
-	dec	esi
-	mov	edi, r15d
-	call	intpl
-	pop	r8
-	pop	r9
-	pop	rdx
-	pop	rsi
-	pop	rdi
+	mov	edx, ecx
+	shr	edx, 16
+        mov   	[esi], dl
+	mov 	edx, ebx
+	shr	edx, 16
+	mov	[esi+1], dl
+	mov	edx, eax
+	shr	edx, 16
+	mov	[esi+2], dl
+	add   	esi, 3
+        add	ecx, [ebp-64]
+	add	ebx, [ebp-60]
+	add	eax, [ebp-56]
+	dec	edi
+        jnz    	loopx
 
-        mov   	[r13], eax 
+	add	esi, [ebp-68]
 
-	add   	r13, 3
-        inc    	r15d
-	cmp	r15d, esi
-       	jne    	loopx
-	add	r13, r12
-	
-endrow:
-	inc	r14d
-	cmp	r14d, edi
-        jne   	loopy
-	mov	eax, bmpheadline
-	mov	byte [eax], 'B'
-	mov	byte [eax+1], 'M' 
-	mov 	dword[eax+10], 54
-	mov	dword[eax+14], 40
-	mov	byte [eax+26], 1
-	mov	byte [eax+28], 24 
-	mov	[eax+18], esi
-	lea	ecx, [esi+esi*2]
-	add	ecx, r12d
-	mov	edx, edi
-	mov	[eax+22], edx
-	imul	ecx, edx
-	mov	r14d, ecx
-	mov	[eax+34], ecx
-	add	ecx, 54
-	mov	[eax+2], ecx
-	
+	mov	eax, [ebp-40]
+	add	[ebp-16], eax
+	mov	eax, [ebp-36]
+	add	[ebp-12], eax
+	mov	eax, [ebp-32]
+	add	[ebp-8], eax
+	mov	eax, [ebp-52]
+	add	[ebp-28], eax
+	mov	eax, [ebp-48]
+	add	[ebp-24], eax
+	mov	eax, [ebp-44]
+	add	[ebp-20], eax
 
-	mov     rax,85 
-    	mov     rdi,msg                          
-                                              
-    	mov     rsi,111111111b                    
-    	syscall                                    
-
-    	mov     r8, rax
-
-    	mov     rax, 1                         
-    	mov     rdi, r8                     
-    	mov     rsi, bmpheadline        
-    	mov     rdx, 54  
-   	syscall                        
-
-    	mov     rax, 1           
-    	mov     rdi, r8                     
-    	mov     rsi, pixel_array                
-    	mov     rdx, r14           
-    	syscall                    
-
-
-    	mov     rax, 3               
-    	mov     rdi, r8                   
-   	syscall  
-	           
+	dec	dword [ebp-4]
+        jnz   	loopy                        
 	pop	r15
 	pop	r14
-	pop	r13                                                          
+	pop	r13
 	pop	r12
-	pop 	rbx
 	mov	rsp, rbp
 	pop	rbp
-	ret
-
-	global	intpl
-intpl:
-	mov	r8d, ecx
-	mov	r9d, edx
-	mov	eax, edi
-	mov	ecx, esi
-	mov	edx, 0
-	mov	r10, 0
-	shl	eax, 16
-	div	ecx
-	mov	edx, 0
-	mov	dl, r8b
-	imul	edx, eax
-	shr	edx, 16
-	or	r10d, edx
-	shr	r8d, 8
-	mov	dl, r8b
-	imul	edx, eax
-	shr	edx, 16
-	shl	edx, 8
-	or	r10d, edx
-	shr	r8d, 8
-	mov	edx, 0
-	mov	dl, r8b
-	imul	edx, eax
-	shr	edx, 16
-	shl	edx, 16
-	or	r10d, edx
-	mov	ecx, 1
-	shl	ecx, 16
-	sub	ecx, eax
-	mov	edx, 0
-	mov	dl, r9b
-	imul	edx, ecx
-	shr	edx, 16
-	add	r10d, edx
-	shr	r9d, 8
-	mov	dl, r9b
-	imul	edx, ecx
-	shr	edx, 16
-	shl	edx, 8
-	add	r10d, edx
-	shr	r9d, 8
-	mov	edx, 0
-	mov	dl, r9b
-	imul	edx, ecx
-	shr	edx, 16
-	shl	edx, 16
-	add	r10d, edx
-	mov	eax, r10d
 	ret

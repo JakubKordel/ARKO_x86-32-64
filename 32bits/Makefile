@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-m32 -Wall
+CFLAGS=-m32 -Wall -std=c99 -fpack-struct=1
 
 all:	main.o shaderect.o
 	$(CC) $(CFLAGS) main.o shaderect.o -o shaderect
